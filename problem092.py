@@ -29,10 +29,9 @@ for i in xrange(1, 7*(9**2) + 1):
 # eg. [aaabbd] has 420 permutations: aaabbd, aaabdb, aaadbb, baabda, ...
 # We compute it as: C(3,6)*C(2,3)*C(1,1), 
 # where C(k,n) is number of combinations: C(k,n) = n!/((n-k)!*k!)
-# (We could cache results, it would be about 5-10 % faster)
 def permutationsCount(counter):
     holes, temp = 7, 1
-    for v in counter.values():
+    for v in counter:
         temp *= combinationCount(v, holes)
         holes -= v
     return temp
@@ -40,9 +39,10 @@ def permutationsCount(counter):
 # Computes all _combinations_ of 123456789 of length 1..7,
 # which stucks in 89
 def getCombinations():
+    toint = lambda x: reduce(lambda rst, d: rst * 10 + d, comb) # converts (1,2,3) to 123
     for c in xrange(1, 8):
         for comb in combinations_with_replacement(range(1, 10), c):
-            i = reduce(lambda rst, d: rst * 10 + d, comb)   # convert (1,2,3) to 123
+            i = toint(comb)  
             if cachedDigitPowers[digitPowers(i)]:
                 yield i
 
@@ -61,7 +61,7 @@ def getCounter(n):
 # Count all permutations: eg. if 1255 is in stucksIn89, then
 # 1552, 5152, 51520, 15052, ... stucks in 89 too.
 def getAllCombsCount():
-    return (permutationsCount(getCounter(num)) for num in getCombinations())
+    return (permutationsCount(getCounter(num).values()) for num in getCombinations())
 
 print sum(getAllCombsCount()) # Yay! 
 print time() - t
