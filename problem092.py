@@ -70,5 +70,5 @@ def getCombinations():
 def getAllCombsCount():
     return (permutationsCount(getCounter(num).values()) for num in getCombinations())
 
-print sum(getAllCombsCount()) == 8581146 # Yay! 
+print sum(getAllCombsCount()) # Yay! 
 print time() - t
