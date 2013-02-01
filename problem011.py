@@ -1,4 +1,7 @@
-strnum="""08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
+from operator import mul, or_
+from itertools import chain
+
+strmatrix = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
 81 49 31 73 55 79 14 29 93 71 40 67 53 88 30 03 49 13 36 65
 52 70 95 23 04 60 11 42 69 24 68 56 01 32 56 71 37 02 36 91
@@ -19,9 +22,18 @@ strnum="""08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"""
 
-num = [map(int, x.split(' ')) for x in strnum.splitlines()]
-print num
+matrix = [map(int, x.split(' ')) for x in strmatrix.splitlines()]
 
-def getMax(line):
-    for a,b,c,d in zip(line, line[1:], line[2:], line[3:]):
-        
+def prod(n):
+    return reduce(mul, n)
+
+def straight(matrix):
+    return (prod(line[i:i+4]) for line in matrix for i in xrange(17))
+
+def diag(matrix):
+    return (prod([matrix[j+k][i+k] for k in xrange(4)]) for j in xrange(17) for i in xrange(17))
+
+def getAllProds(m):
+    return chain(straight(m), straight(zip(*m)), diag(m), diag(map(lambda x: x[::-1], m)))
+
+print max(getAllProds(matrix))

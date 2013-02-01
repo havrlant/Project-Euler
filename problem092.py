@@ -61,7 +61,7 @@ def permutationsCount(counter):
 def getCombinations():
     cachedDigitPowers = getFirst567DigitNumbers()
     for c in xrange(1, 8):
-        for comb in combinations_with_replacement(range(1, 10), c): 
+        for comb in combinations_with_replacement(range(1, 10), c):
             if cachedDigitPowers[digitPowers(comb)]:
                 yield comb
 

@@ -2,6 +2,16 @@ import math
 from itertools import *
 import operator
 
+def cached(fun):
+    dtb = {}
+    def tempFun(n):
+        temp = dtb.get(n, None)
+        if temp is None:
+            temp = fun(n)
+            dtb[n] = temp
+        return temp
+    return tempFun
+
 def isPrime(n):
     if n < 2: return False
     if n == 2: return True
@@ -22,6 +32,17 @@ def fib():
     while 1:
         yield a
         a, b = b, a + b
+
+def divisors(n):
+    sq = math.sqrt(n)
+    isq = int(sq)
+    notSquare = isq != sq
+    for i in xrange(2, isq + notSquare):
+        if n % i == 0:
+            yield i
+            yield int(n / i)
+    if not notSquare:
+        yield isq
 
 def factors(n):
     factors = []
@@ -57,6 +78,14 @@ def primesBelow(n):
 def prod(n):
     return reduce(operator.mul, n)
 
+def digitsToNum(digits):
+    num = digits[0]
+    for digit in digits[1:]:
+        num *= 10
+        num += digit
+    return num
+
+@cached
 def _get_next_prime_factor(n):
     if n % 2 == 0:
         return 2
