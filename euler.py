@@ -2,6 +2,16 @@ import math
 from itertools import *
 import operator
 
+def num_to_digits(num):
+    digits = []
+    while num:
+        digits.append(num % 10)
+        num /= 10
+    return digits
+
+def factorial(n):
+    return 1 if n < 2 else n * factorial(n-1)
+
 def cached(fun):
     dtb = {}
     def tempFun(n):
@@ -84,6 +94,8 @@ def digitsToNum(digits):
         num *= 10
         num += digit
     return num
+
+digits_to_num = digitsToNum
 
 @cached
 def _get_next_prime_factor(n):
